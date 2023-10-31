@@ -9,7 +9,7 @@ use App\Models\Client;
 use App\Models\Role;
 use App\Models\User;
 use App\Traits\CheckRole;
-use App\Traits\Pagination;
+use App\Traits\OutputListFormat;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\DB;
 class UserController extends Controller
 {
     use CheckRole;
-    use Pagination;
+    use OutputListFormat;
 
 
     /**

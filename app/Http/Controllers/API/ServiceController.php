@@ -9,13 +9,13 @@ use App\Models\Phone;
 use App\Models\RequestStatus;
 use App\Models\Service;
 use App\Traits\CheckRole;
-use App\Traits\Pagination;
+use App\Traits\OutputListFormat;
 use Illuminate\Http\Request;
 
 class ServiceController extends Controller
 {
     use CheckRole;
-    use Pagination;
+    use OutputListFormat;
 
     /**
      * Display a listing of the resource.
@@ -23,7 +23,7 @@ class ServiceController extends Controller
     public function index(Request $request)
     {
         if ($this->isAdmin($request->user())) {
-            return $this->paginate($request, Service::class);
+            return $this->full($request, Service::class);
         }
         return ApiResponse::error(null, self::ACCESS_DENIED_MESSAGE);
     }

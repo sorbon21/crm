@@ -7,13 +7,13 @@ use App\Http\Requests\API\SaveCommentRequest;
 use App\Http\Responses\ApiResponse;
 use App\Models\Comment;
 use App\Traits\CheckRole;
-use App\Traits\Pagination;
+use App\Traits\OutputListFormat;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
     use CheckRole;
-    use Pagination;
+    use OutputListFormat;
 
     /**
      * Display a listing of the resource.

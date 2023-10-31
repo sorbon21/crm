@@ -9,7 +9,7 @@ use App\Models\Client;
 use App\Models\Phone;
 use App\Models\User;
 use App\Traits\CheckRole;
-use App\Traits\Pagination;
+use App\Traits\OutputListFormat;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 class PhoneController extends Controller
 {
     use CheckRole;
-    use Pagination;
+    use OutputListFormat;
 
     /**
      * Display a listing of the resource.

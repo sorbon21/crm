@@ -8,7 +8,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
-trait Pagination
+trait OutputListFormat
 {
 
     const PER_PAGE = 24;
@@ -21,5 +21,13 @@ trait Pagination
         $query = $modelInstance->applyFilters($query, $request->all());
         $result = $query->paginate(self::PER_PAGE, ['*'], 'page', $page);
         return ApiResponse::success($result);
+    }
+
+    public function full(Request $request, string $ModelClass)
+    {
+        $modelInstance = new $ModelClass();
+        $query = $modelInstance->query();
+        $query = $modelInstance->applyFilters($query, $request->all());
+        return ApiResponse::success($query->get());
     }
 }
