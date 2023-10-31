@@ -1,17 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\API\SaveRequestStatusRequest;
+use App\Http\Requests\API\V1\SaveCommentRequest;
 use App\Http\Responses\ApiResponse;
-use App\Models\Phone;
-use App\Models\RequestStatus;
+use App\Models\Comment;
 use App\Traits\CheckRole;
 use App\Traits\OutputListFormat;
 use Illuminate\Http\Request;
 
-class RequestStatusController extends Controller
+class CommentController extends Controller
 {
     use CheckRole;
     use OutputListFormat;
@@ -22,7 +21,7 @@ class RequestStatusController extends Controller
     public function index(Request $request)
     {
         if ($this->isOperator($request->user()) || $this->isSpecialist($request->user())) {
-            return $this->paginate($request, RequestStatus::class);
+            return $this->paginate($request, Comment::class);
         }
         return ApiResponse::error(null, self::ACCESS_DENIED_MESSAGE);
     }
@@ -30,11 +29,11 @@ class RequestStatusController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(SaveRequestStatusRequest $request)
+    public function store(SaveCommentRequest $request)
     {
         if ($this->isOperator($request->user()) || $this->isSpecialist($request->user())) {
-            $save = RequestStatus::saveOrUpdate($request);
-            return ApiResponse::success($save);
+            $result = Comment::saveOrUpdate($request);
+            return ApiResponse::success($result);
         }
         return ApiResponse::error(null, self::ACCESS_DENIED_MESSAGE);
 
@@ -45,17 +44,17 @@ class RequestStatusController extends Controller
      */
     public function show(string $id)
     {
-        $result = Phone::find($id);
+        $result = Comment::find($id);
         return ApiResponse::success($result);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(SaveRequestStatusRequest $request, string $id)
+    public function update(SaveCommentRequest $request, string $id)
     {
         if ($this->isOperator($request->user()) || $this->isSpecialist($request->user())) {
-            $result = RequestStatus::saveOrUpdate($request, $id);
+            $result = Comment::saveOrUpdate($request, $id);
             return ApiResponse::success($result);
         }
         return ApiResponse::error(null, self::ACCESS_DENIED_MESSAGE);
@@ -66,7 +65,7 @@ class RequestStatusController extends Controller
      */
     public function destroy(string $id)
     {
-        $result = RequestStatus::find($id);
+        $result = Comment::find($id);
         $result->delete();
         return ApiResponse::success($result);
     }

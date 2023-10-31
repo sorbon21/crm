@@ -1,16 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\API\SaveCommentRequest;
+use App\Http\Requests\API\V1\SaveServiceRequest;
 use App\Http\Responses\ApiResponse;
-use App\Models\Comment;
+use App\Models\RequestStatus;
+use App\Models\Service;
 use App\Traits\CheckRole;
 use App\Traits\OutputListFormat;
 use Illuminate\Http\Request;
 
-class CommentController extends Controller
+class ServiceController extends Controller
 {
     use CheckRole;
     use OutputListFormat;
@@ -20,8 +21,8 @@ class CommentController extends Controller
      */
     public function index(Request $request)
     {
-        if ($this->isOperator($request->user()) || $this->isSpecialist($request->user())) {
-            return $this->paginate($request, Comment::class);
+        if ($this->isAdmin($request->user())) {
+            return $this->full($request, Service::class);
         }
         return ApiResponse::error(null, self::ACCESS_DENIED_MESSAGE);
     }
@@ -29,14 +30,13 @@ class CommentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(SaveCommentRequest $request)
+    public function store(SaveServiceRequest $request)
     {
-        if ($this->isOperator($request->user()) || $this->isSpecialist($request->user())) {
-            $result = Comment::saveOrUpdate($request);
+        if ($this->isAdmin($request->user())) {
+            $result = Service::saveOrUpdate($request);
             return ApiResponse::success($result);
         }
         return ApiResponse::error(null, self::ACCESS_DENIED_MESSAGE);
-
     }
 
     /**
@@ -44,17 +44,17 @@ class CommentController extends Controller
      */
     public function show(string $id)
     {
-        $result = Comment::find($id);
+        $result = Service::find($id);
         return ApiResponse::success($result);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(SaveCommentRequest $request, string $id)
+    public function update(SaveServiceRequest $request, string $id)
     {
-        if ($this->isOperator($request->user()) || $this->isSpecialist($request->user())) {
-            $result = Comment::saveOrUpdate($request, $id);
+        if ($this->isAdmin($request->user())) {
+            $result = RequestStatus::saveOrUpdate($request, $id);
             return ApiResponse::success($result);
         }
         return ApiResponse::error(null, self::ACCESS_DENIED_MESSAGE);
@@ -65,7 +65,7 @@ class CommentController extends Controller
      */
     public function destroy(string $id)
     {
-        $result = Comment::find($id);
+        $result = Service::find($id);
         $result->delete();
         return ApiResponse::success($result);
     }

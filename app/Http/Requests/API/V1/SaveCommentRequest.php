@@ -1,16 +1,11 @@
 <?php
 
-namespace App\Http\Requests\API;
+namespace App\Http\Requests\API\V1;
 
 use App\Http\Responses\ApiResponse;
-use App\Rules\FindLoginRule;
-use App\Rules\IsEmailExistRule;
-use App\Rules\IsLoginExistRule;
-use App\Rules\IsRoleAllowedToAssignRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class SaveServiceRequest extends FormRequest
+class SaveCommentRequest extends FormRequest
 {
 
     /**
@@ -21,7 +16,7 @@ class SaveServiceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|max:255',
+            'content' => 'required',
         ];
     }
 

@@ -1,7 +1,6 @@
 <?php
 
-use App\Http\Controllers\API\AuthController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\API\V1\AuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,12 +18,12 @@ Route::prefix('v1')->group(function () {
         Route::post('login', 'login');
     });
     Route::middleware(\App\Http\Middleware\AuthenticateJWT::class)->group(function () {
-        Route::resource('user', \App\Http\Controllers\API\UserController::class);
-        Route::resource('client', \App\Http\Controllers\API\ClientController::class);
-        Route::resource('service', \App\Http\Controllers\API\ServiceController::class);
-        Route::resource('request', \App\Http\Controllers\API\RequestController::class);
-        Route::resource('request-status', \App\Http\Controllers\API\RequestStatusController::class);
-        Route::resource('comment', \App\Http\Controllers\API\CommentController::class);
-        Route::resource('phone', \App\Http\Controllers\API\PhoneController::class);
+        Route::resource('user', \App\Http\Controllers\API\V1\UserController::class);
+        Route::resource('client', \App\Http\Controllers\API\V1\ClientController::class);
+        Route::resource('service', \App\Http\Controllers\API\V1\ServiceController::class);
+        Route::resource('request', \App\Http\Controllers\API\V1\RequestController::class);
+        Route::resource('request-status', \App\Http\Controllers\API\V1\RequestStatusController::class);
+        Route::resource('comment', \App\Http\Controllers\API\V1\CommentController::class);
+        Route::resource('phone', \App\Http\Controllers\API\V1\PhoneController::class);
     });
 });

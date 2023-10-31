@@ -1,18 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\API\SavePhoneRequest;
+use App\Http\Requests\API\V1\SavePhoneRequest;
 use App\Http\Responses\ApiResponse;
-use App\Models\Client;
 use App\Models\Phone;
-use App\Models\User;
 use App\Traits\CheckRole;
 use App\Traits\OutputListFormat;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class PhoneController extends Controller
 {

@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\API\SaveUserRequest;
+use App\Http\Requests\API\V1\SaveUserRequest;
 use App\Http\Responses\ApiResponse;
-use App\Models\Client;
 use App\Models\Role;
 use App\Models\User;
 use App\Traits\CheckRole;

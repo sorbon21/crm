@@ -1,18 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\API\SaveServiceRequest;
+use App\Http\Requests\API\V1\SaveRequestStatusRequest;
 use App\Http\Responses\ApiResponse;
 use App\Models\Phone;
 use App\Models\RequestStatus;
-use App\Models\Service;
 use App\Traits\CheckRole;
 use App\Traits\OutputListFormat;
 use Illuminate\Http\Request;
 
-class ServiceController extends Controller
+class RequestStatusController extends Controller
 {
     use CheckRole;
     use OutputListFormat;
@@ -22,8 +21,8 @@ class ServiceController extends Controller
      */
     public function index(Request $request)
     {
-        if ($this->isAdmin($request->user())) {
-            return $this->full($request, Service::class);
+        if ($this->isOperator($request->user()) || $this->isSpecialist($request->user())) {
+            return $this->paginate($request, RequestStatus::class);
         }
         return ApiResponse::error(null, self::ACCESS_DENIED_MESSAGE);
     }
@@ -31,13 +30,14 @@ class ServiceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(SaveServiceRequest $request)
+    public function store(SaveRequestStatusRequest $request)
     {
-        if ($this->isAdmin($request->user())) {
-            $result = Service::saveOrUpdate($request);
-            return ApiResponse::success($result);
+        if ($this->isOperator($request->user()) || $this->isSpecialist($request->user())) {
+            $save = RequestStatus::saveOrUpdate($request);
+            return ApiResponse::success($save);
         }
         return ApiResponse::error(null, self::ACCESS_DENIED_MESSAGE);
+
     }
 
     /**
@@ -45,16 +45,16 @@ class ServiceController extends Controller
      */
     public function show(string $id)
     {
-        $result = Service::find($id);
+        $result = Phone::find($id);
         return ApiResponse::success($result);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(SaveServiceRequest $request, string $id)
+    public function update(SaveRequestStatusRequest $request, string $id)
     {
-        if ($this->isAdmin($request->user())) {
+        if ($this->isOperator($request->user()) || $this->isSpecialist($request->user())) {
             $result = RequestStatus::saveOrUpdate($request, $id);
             return ApiResponse::success($result);
         }
@@ -66,7 +66,7 @@ class ServiceController extends Controller
      */
     public function destroy(string $id)
     {
-        $result = Service::find($id);
+        $result = RequestStatus::find($id);
         $result->delete();
         return ApiResponse::success($result);
     }

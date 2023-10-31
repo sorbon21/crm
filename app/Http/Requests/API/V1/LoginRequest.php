@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Requests\API;
+namespace App\Http\Requests\API\V1;
 
 use App\Http\Responses\ApiResponse;
 use App\Rules\FindLoginRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class LoginRequest extends FormRequest
 {
