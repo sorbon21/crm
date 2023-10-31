@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\API\SavePhoneRequest;
 use App\Http\Responses\ApiResponse;
 use App\Models\Client;
 use App\Models\Phone;
@@ -32,11 +33,11 @@ class PhoneController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SavePhoneRequest $request)
     {
         if ($this->isOperator($request->user()) || $this->isSpecialist($request->user())) {
-            $client = Phone::saveOrUpdate($request);
-            return ApiResponse::success($client);
+            $result = Phone::saveOrUpdate($request);
+            return ApiResponse::success($result);
         }
         return ApiResponse::error(null, self::ACCESS_DENIED_MESSAGE);
 
@@ -47,18 +48,18 @@ class PhoneController extends Controller
      */
     public function show(string $id)
     {
-        $client = Phone::find($id);
-        return ApiResponse::success($client);
+        $result = Phone::find($id);
+        return ApiResponse::success($result);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(SavePhoneRequest $request, string $id)
     {
         if ($this->isOperator($request->user()) || $this->isSpecialist($request->user())) {
-            $client = Phone::saveOrUpdate($request, $id);
-            return ApiResponse::success($client);
+            $result = Phone::saveOrUpdate($request, $id);
+            return ApiResponse::success($result);
         }
         return ApiResponse::error(null, self::ACCESS_DENIED_MESSAGE);
     }
@@ -68,8 +69,8 @@ class PhoneController extends Controller
      */
     public function destroy(string $id)
     {
-        $client = Phone::find($id);
-        $client->delete();
-        return ApiResponse::success($client);
+        $result = Phone::find($id);
+        $result->delete();
+        return ApiResponse::success($result);
     }
 }

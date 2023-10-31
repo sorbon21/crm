@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\API\SaveCommentRequest;
 use App\Http\Responses\ApiResponse;
 use App\Models\Comment;
 use App\Traits\CheckRole;
@@ -28,11 +29,11 @@ class CommentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SaveCommentRequest $request)
     {
         if ($this->isOperator($request->user()) || $this->isSpecialist($request->user())) {
-            $client = Comment::saveOrUpdate($request);
-            return ApiResponse::success($client);
+            $result = Comment::saveOrUpdate($request);
+            return ApiResponse::success($result);
         }
         return ApiResponse::error(null, self::ACCESS_DENIED_MESSAGE);
 
@@ -43,18 +44,18 @@ class CommentController extends Controller
      */
     public function show(string $id)
     {
-        $client = Comment::find($id);
-        return ApiResponse::success($client);
+        $result = Comment::find($id);
+        return ApiResponse::success($result);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(SaveCommentRequest $request, string $id)
     {
         if ($this->isOperator($request->user()) || $this->isSpecialist($request->user())) {
-            $client = Comment::saveOrUpdate($request, $id);
-            return ApiResponse::success($client);
+            $result = Comment::saveOrUpdate($request, $id);
+            return ApiResponse::success($result);
         }
         return ApiResponse::error(null, self::ACCESS_DENIED_MESSAGE);
     }
@@ -64,8 +65,8 @@ class CommentController extends Controller
      */
     public function destroy(string $id)
     {
-        $client = Comment::find($id);
-        $client->delete();
-        return ApiResponse::success($client);
+        $result = Comment::find($id);
+        $result->delete();
+        return ApiResponse::success($result);
     }
 }

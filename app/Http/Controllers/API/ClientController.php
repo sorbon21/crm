@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\API\SaveClientRequest;
 use App\Http\Responses\ApiResponse;
 use App\Models\Client;
 use App\Models\User;
@@ -29,7 +30,7 @@ class ClientController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SaveClientRequest $request)
     {
         if ($this->isOperator($request->user()) || $this->isSpecialist($request->user())) {
             $client = Client::saveOrUpdate($request);
@@ -51,7 +52,7 @@ class ClientController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(SaveClientRequest $request, string $id)
     {
         if ($this->isOperator($request->user()) || $this->isSpecialist($request->user())) {
             $client = Client::saveOrUpdate($request, $id);

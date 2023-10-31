@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\API\SaveClientRequest;
 use App\Http\Responses\ApiResponse;
 use App\Models\Comment;
 use App\Traits\CheckRole;
@@ -28,11 +29,11 @@ class RequestController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SaveClientRequest $request)
     {
         if ($this->isOperator($request->user()) || $this->isSpecialist($request->user())) {
-            $client = \App\Models\Request::saveOrUpdate($request);
-            return ApiResponse::success($client);
+            $result = \App\Models\Request::saveOrUpdate($request);
+            return ApiResponse::success($result);
         }
         return ApiResponse::error(null, self::ACCESS_DENIED_MESSAGE);
 
@@ -43,18 +44,18 @@ class RequestController extends Controller
      */
     public function show(string $id)
     {
-        $client = \App\Models\Request::find($id);
-        return ApiResponse::success($client);
+        $result = \App\Models\Request::find($id);
+        return ApiResponse::success($result);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(SaveClientRequest $request, string $id)
     {
         if ($this->isOperator($request->user()) || $this->isSpecialist($request->user())) {
-            $client = \App\Models\Request::saveOrUpdate($request, $id);
-            return ApiResponse::success($client);
+            $result = \App\Models\Request::saveOrUpdate($request, $id);
+            return ApiResponse::success($result);
         }
         return ApiResponse::error(null, self::ACCESS_DENIED_MESSAGE);
     }
@@ -64,8 +65,8 @@ class RequestController extends Controller
      */
     public function destroy(string $id)
     {
-        $client = \App\Models\Request::find($id);
-        $client->delete();
-        return ApiResponse::success($client);
+        $result = \App\Models\Request::find($id);
+        $result->delete();
+        return ApiResponse::success($result);
     }
 }

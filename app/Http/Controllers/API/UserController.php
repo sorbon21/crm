@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\API\CreateUserRequest;
+use App\Http\Requests\API\SaveUserRequest;
 use App\Http\Responses\ApiResponse;
 use App\Models\Client;
+use App\Models\Role;
 use App\Models\User;
-use App\Services\UserService;
 use App\Traits\CheckRole;
 use App\Traits\Pagination;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -18,9 +19,6 @@ class UserController extends Controller
     use CheckRole;
     use Pagination;
 
-    public function __construct(private readonly UserService $userService)
-    {
-    }
 
     /**
      * Display a listing of the resource.
@@ -36,14 +34,16 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CreateUserRequest $request)
+    public function store(SaveUserRequest $request)
     {
         try {
             if ($this->isAdmin($request->user())) {
                 DB::beginTransaction();
                 $user = User::saveOrUpdate($request);
+                $role = Role::findByName($request->validated('role'));
+                $user->assignRole($role);
                 DB::commit();
-                return ApiResponse::success([$user], 'user created successfully');
+                return ApiResponse::success($user, 'user created successfully');
             } else {
                 throw new Exception(self::ACCESS_DENIED_MESSAGE);
             }
@@ -69,7 +69,7 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(SaveUserRequest $request, string $id)
     {
         if ($this->isAdmin($request->user())) {
             $user = User::saveOrUpdate($id);
@@ -83,9 +83,9 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        $client = Client::find($id);
-        $client->delete();
-        return ApiResponse::success($client);
+        $user = User::find($id);
+        $user->delete();
+        return ApiResponse::success($user);
     }
 
 

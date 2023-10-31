@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\API\SaveServiceRequest;
 use App\Http\Responses\ApiResponse;
 use App\Models\Phone;
 use App\Models\RequestStatus;
@@ -30,11 +31,11 @@ class ServiceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SaveServiceRequest $request)
     {
         if ($this->isAdmin($request->user())) {
-            $client = Service::saveOrUpdate($request);
-            return ApiResponse::success($client);
+            $result = Service::saveOrUpdate($request);
+            return ApiResponse::success($result);
         }
         return ApiResponse::error(null, self::ACCESS_DENIED_MESSAGE);
     }
@@ -44,18 +45,18 @@ class ServiceController extends Controller
      */
     public function show(string $id)
     {
-        $client = Service::find($id);
-        return ApiResponse::success($client);
+        $result = Service::find($id);
+        return ApiResponse::success($result);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(SaveServiceRequest $request, string $id)
     {
         if ($this->isAdmin($request->user())) {
-            $client = RequestStatus::saveOrUpdate($request, $id);
-            return ApiResponse::success($client);
+            $result = RequestStatus::saveOrUpdate($request, $id);
+            return ApiResponse::success($result);
         }
         return ApiResponse::error(null, self::ACCESS_DENIED_MESSAGE);
     }
@@ -65,8 +66,8 @@ class ServiceController extends Controller
      */
     public function destroy(string $id)
     {
-        $client = Service::find($id);
-        $client->delete();
-        return ApiResponse::success($client);
+        $result = Service::find($id);
+        $result->delete();
+        return ApiResponse::success($result);
     }
 }
