@@ -21,7 +21,7 @@ class SaveCommentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'content' => 'required|trim',
+            'content' => 'required',
         ];
     }
 

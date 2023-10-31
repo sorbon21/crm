@@ -21,12 +21,12 @@ class SaveClientRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'name' => 'required|string|trim',
+            'name' => 'required|string',
             'phone_id' => 'required|number',
         ];
         if ($this->isMethod('put') || $this->isMethod('patch')) {
             $rules = [
-                'name' => 'sometimes|string|trim',
+                'name' => 'sometimes|string',
                 'phone_id' => 'sometimes|number',
             ];
         }

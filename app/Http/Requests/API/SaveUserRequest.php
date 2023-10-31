@@ -10,7 +10,7 @@ use App\Rules\IsRoleAllowedToAssignRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class CreateUserRequest extends FormRequest
+class SaveUserRequest extends FormRequest
 {
 
     /**
