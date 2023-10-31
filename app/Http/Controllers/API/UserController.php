@@ -72,7 +72,18 @@ class UserController extends Controller
     public function update(SaveUserRequest $request, string $id)
     {
         if ($this->isAdmin($request->user())) {
-            $user = User::saveOrUpdate($id);
+            $user = User::saveOrUpdate($request, $id);
+            $roleName = $request->validated('role');
+            if (isset($roleName)) {
+                $role = Role::findByName($roleName);
+                $roles = $user->getRoles();
+                if (is_array($roles)) {
+                    foreach ($user->getRoles() as $cureentRole) {
+                        $user->removeRole($cureentRole);
+                    }
+                }
+                $user->assignRole($role);
+            }
             return ApiResponse::success($user);
         }
         return ApiResponse::error(null, self::ACCESS_DENIED_MESSAGE);
@@ -87,6 +98,4 @@ class UserController extends Controller
         $user->delete();
         return ApiResponse::success($user);
     }
-
-
 }
