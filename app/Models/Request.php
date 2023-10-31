@@ -2,12 +2,18 @@
 
 namespace App\Models;
 
+use App\Traits\FilterForModel;
+use App\Traits\SaveModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Request extends Model
 {
+    use FilterForModel;
     use HasFactory;
+    use SaveModel;
+
+    protected $relationsToLoad = ['service', 'client', 'operator'];
 
 
     protected $fillable = [

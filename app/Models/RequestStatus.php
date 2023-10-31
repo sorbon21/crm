@@ -2,12 +2,17 @@
 
 namespace App\Models;
 
+use App\Traits\FilterForModel;
+use App\Traits\SaveModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class RequestStatus extends Model
 {
     use HasFactory;
+    use FilterForModel;
+    use SaveModel;
+    protected $relationsToLoad = ['request', 'specialist', 'comment'];
 
     protected $fillable = [
         'request_id',
