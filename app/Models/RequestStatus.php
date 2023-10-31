@@ -12,6 +12,8 @@ class RequestStatus extends Model
     use HasFactory;
     use FilterForModel;
     use SaveModel;
+
+    protected $table = 'request_status';
     protected $relationsToLoad = ['request', 'specialist', 'comment'];
 
     protected $fillable = [

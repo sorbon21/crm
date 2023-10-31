@@ -13,7 +13,7 @@ class Phone extends Model
     use FilterForModel;
     use SaveModel;
 
-
+    protected $table = 'phone';
     protected $fillable = [
         'country_code',
         'phone',

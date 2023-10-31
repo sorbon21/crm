@@ -13,6 +13,7 @@ class Client extends Model
     use FilterForModel;
     use SaveModel;
 
+    protected $table = 'client';
     protected $relationsToLoad = ['phone'];
 
     protected $fillable = [

@@ -13,6 +13,7 @@ class Comment extends Model
     use FilterForModel;
     use SaveModel;
 
+    protected $table = 'comment';
     protected $fillable = [
         'content',
     ];

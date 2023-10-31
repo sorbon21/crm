@@ -12,6 +12,8 @@ class Service extends Model
     use HasFactory;
     use FilterForModel;
     use SaveModel;
+
+    protected $table = 'service';
     protected $fillable = [
         'name',
     ];

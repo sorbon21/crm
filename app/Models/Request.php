@@ -13,6 +13,8 @@ class Request extends Model
     use HasFactory;
     use SaveModel;
 
+    protected $table = 'request';
+
     protected $relationsToLoad = ['service', 'client', 'operator'];
 
 
