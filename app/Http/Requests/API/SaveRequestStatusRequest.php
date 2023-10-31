@@ -10,7 +10,7 @@ use App\Rules\IsRoleAllowedToAssignRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class CreateUserRequest extends FormRequest
+class SaveRequestStatusRequest extends FormRequest
 {
 
     /**
@@ -20,25 +20,19 @@ class CreateUserRequest extends FormRequest
      */
     public function rules(): array
     {
+        if ($this->isMethod('put') || $this->isMethod('patch')) {
+            return [
+                'request_id' => 'sometimes|exists:requests,id',
+                'specialist_id' => 'sometimes|exists:users,id',
+                'comment_id' => 'sometimes|exists:comments,id',
+                'status' => 'sometimes|string|max:255',
+            ];
+        }
         return [
-            'name' => 'required',
-            'login' => [
-                'required',
-                'string',
-                new IsLoginExistRule()
-            ],
-            'email' => [
-                'required',
-                'email',
-                new IsEmailExistRule()
-            ],
-            'role' => [
-                'required',
-                'string',
-                new IsRoleAllowedToAssignRule()
-            ],
-            'password' => 'required|string',
-
+            'request_id' => 'required|exists:requests,id',
+            'specialist_id' => 'required|exists:users,id',
+            'comment_id' => 'required|exists:comments,id',
+            'status' => 'required|string|max:255',
         ];
     }
 
