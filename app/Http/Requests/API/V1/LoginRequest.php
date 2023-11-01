@@ -28,7 +28,7 @@ class LoginRequest extends FormRequest
 
     protected function failedValidation($validator)
     {
-        $response = ApiResponse::warning(null, $validator->getMessageBag());
+        $response = ApiResponse::warning($validator->getMessageBag());
         throw new \Illuminate\Validation\ValidationException($validator, $response);
     }
 
