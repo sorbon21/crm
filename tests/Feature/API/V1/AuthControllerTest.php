@@ -2,33 +2,49 @@
 
 namespace Tests\Feature\API\V1;
 
-use App\Models\User;
+use App\Enums\RBAC;
+
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+
 
 class AuthControllerTest extends TestCase
 {
     use RefreshDatabase;
+    use UserTrait;
 
     public function testLoginWithValidCredentials()
     {
-        User::factory()->create([
-            'name' => 'ivan',
-            'email' => 'user@example.com',
-            'login' => 'user1',
-            'password' => bcrypt('password123'),
-        ]);
+        $this->createUsers();
 
         $response = $this->post('/api/v1/login', [
-            'login' => 'user@example.com',
-            'password' => 'password123',
+            'login' => 'user1',
+            'password' => 'password',
         ]);
         $response->assertJsonStructure(['status',
             'message',
             'data' => [
                 'token',
             ]]);
+        $response = $this->post('/api/v1/login', [
+            'login' => 'user2',
+            'password' => 'password',
+        ]);
+        $response->assertJsonStructure(['status',
+            'message',
+            'data' => [
+                'token',
+            ]]);
+        $response = $this->post('/api/v1/login', [
+            'login' => 'user3',
+            'password' => 'password',
+        ]);
+        $response->assertJsonStructure(['status',
+            'message',
+            'data' => [
+                'token',
+            ]]);
+
     }
 
     public function testLoginWithInvalidCredentials()
